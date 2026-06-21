@@ -297,27 +297,41 @@
   <!-- SAMBUTAN -->
   <section class="section sambutan" id="sambutanSection">
     <div class="container">
-      <div class="sambutan-grid">
-        <div class="sambutan-foto">
-          <img id="sambutanFoto" src="{{ asset('images/PakSubhan.jpeg') }}" alt="Kepala Kemenhaj">
-          <div class="sambutan-overlay">
-            <h4 id="sambutanNama">Nama Kepala</h4>
-            <p id="sambutanJabatan">Kepala Kementrian Haji Kota Malang</p>
-          </div>
+        <div class="sambutan-grid">
+            <div class="sambutan-foto">
+                @if($profil && $profil->foto)
+                    <img src="{{ asset('storage/' . $profil->foto) }}" 
+                         alt="{{ $profil->nama }}"
+                         onerror="this.src='{{ asset('images/logo-kemenhaj.png') }}'">
+                @else
+                    <img src="{{ asset('images/logo-kemenhaj.png') }}" alt="Default Foto">
+                @endif
+                <div class="sambutan-overlay">
+                    <h4>{{ $profil->nama ?? 'Nama Kepala' }}</h4>
+                    <p>{{ $profil->jabatan ?? 'Kepala Kementrian Haji Kota Malang' }}</p>
+                </div>
+            </div>
+            <div class="sambutan-text">
+                <h2>Sambutan Kepala</h2>
+                <p>{{ $profil->isi ?? 'Sambutan belum tersedia.' }}</p>
+                <h3>Visi</h3>
+                <p>{{ $profil->visi ?? 'Visi belum diatur.' }}</p>
+                <h3>Misi</h3>
+                <ul>
+                    @if($profil && $profil->misi)
+                        @foreach(explode("\n", $profil->misi) as $misi)
+                            @if(trim($misi))
+                                <li>{{ trim($misi) }}</li>
+                            @endif
+                        @endforeach
+                    @else
+                        <li>Misi belum diatur.</li>
+                    @endif
+                </ul>
+            </div>
         </div>
-        <div class="sambutan-text">
-          <h2 id="sambutanJudul">Sambutan Kepala</h2>
-          <p id="sambutanIsi">Sambutan belum tersedia.</p>
-          <h3>Visi</h3>
-          <p id="sambutanVisi">Visi belum diatur.</p>
-          <h3>Misi</h3>
-          <ul id="sambutanMisi">
-            <li>Misi belum diatur.</li>
-          </ul>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
 
   <!-- VIDEO -->
   <section id="video-section" style="padding:60px 0; background:#f8f9fa;">

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Berita;
 use App\Models\Paket;
+use App\Models\Profil;
 
 // ============ HALAMAN UTAMA ============
 Route::get('/', function () {
@@ -12,8 +13,9 @@ Route::get('/', function () {
     $beritasLainnya = Berita::where('jenis', 'lainnya')->latest()->get();
     $paketHaji = Paket::where('jenis', 'haji')->get();
     $paketUmrah = Paket::where('jenis', 'umrah')->get();
+    $profil = Profil::latest()->first();
     
-    return view('index', compact('beritas', 'beritasLainnya', 'paketHaji', 'paketUmrah'));
+    return view('index', compact('beritas', 'beritasLainnya', 'paketHaji', 'paketUmrah', 'profil'));
 })->name('home');
 
 // ============ LOGIN ============
@@ -21,7 +23,6 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
-// ============ LOGOUT (TAMBAHKAN INI) ============
 Route::post('/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
@@ -29,22 +30,21 @@ Route::post('/logout', function (Request $request) {
     return redirect('/login');
 })->name('logout');
 
-// ============ REGISTER ============
 Route::get('/register', function () {
     return view('register');
 })->name('register');
 
-// ============ INDEX ============
 Route::get('/index', function () {
     $beritas = Berita::where('jenis', 'terkini')->latest()->get();
     $beritasLainnya = Berita::where('jenis', 'lainnya')->latest()->get();
     $paketHaji = Paket::where('jenis', 'haji')->get();
     $paketUmrah = Paket::where('jenis', 'umrah')->get();
+    $profil = Profil::latest()->first();
     
-    return view('index', compact('beritas', 'beritasLainnya', 'paketHaji', 'paketUmrah'));
+    return view('index', compact('beritas', 'beritasLainnya', 'paketHaji', 'paketUmrah', 'profil'));
 })->name('index');
 
-// ============ ADMIN (TANPA MIDDLEWARE) ============
+// ============ ADMIN ============
 Route::get('/admin', function () {
     return view('admin');
 })->name('admin');
